@@ -16,7 +16,6 @@ import net.myphenotype.Microservices.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -42,8 +41,14 @@ public class AccountServiceImpl implements IAccountService {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobile number "
                     +customerDto.getMobileNumber());
         }
+        /*
+
+        Removing the below two lines since AuditAware will take care of this.
+
         customer.setCreatedAt(LocalDateTime.now());
         customer.setCreatedBy("UndefinedUser");
+
+         */
         Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }
@@ -60,8 +65,14 @@ public class AccountServiceImpl implements IAccountService {
         newAccount.setAccountNumber(randomAccNumber);
         newAccount.setAccountType(AccountConstants.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
+        /*
+
+        Removing the below two lines since AuditAware will take care of this.
+
         newAccount.setCreatedAt(LocalDateTime.now());
         newAccount.setCreatedBy("UndefinedUser");
+
+         */
         return newAccount;
     }
 
@@ -116,7 +127,7 @@ public class AccountServiceImpl implements IAccountService {
 
     /**
      * @param mobileNumber - Input Mobile Number
-     * @return boolean indicating if the delete of Account details is successful or not
+     * @return boolean indicating if the deletion of Account details is successful or not
      */
     @Override
     public boolean deleteAccount(String mobileNumber) {
